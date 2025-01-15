@@ -12,7 +12,7 @@
 <body class="bg-primary d-flex justify-content-center align-items-center vh-100">
     <div class="container bg-white rounded shadow p-4" style="max-width: 400px;">
         <h2 class="text-center mb-4">Sign Up</h2>
-        <form action="createuser" method="post">
+        <form action="createuser" method="post" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="firstname" class="form-label">First Name</label>
                 <input type="text" id="firstname" name="firstname" class="form-control" placeholder="Enter your first name" required>
@@ -37,9 +37,13 @@
                 <label for="password-signup" class="form-label">Confirm Password</label>
                 <input type="password" id="password-signup" name="cnf_password" class="form-control" placeholder="Confirm password" required>
             </div>
+            <div class="mb-3">
+                <label for="user-image" class="form-label">Upload Image</label>
+                <input type="file" id="user-image" name="profilePic" class="form-control" accept="image/*">
+            </div>
             <button type="submit" class="btn btn-primary w-100">Sign Up</button>
             <div class="d-flex justify-content-between mt-3">
-                <a href="login" class="text-decoration-none">Already have an account? Log in</a>
+                <a href="/" class="text-decoration-none">Already have an account? Log in</a>
             </div>
         </form>
     </div>

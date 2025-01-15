@@ -1,11 +1,14 @@
 package com.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -13,12 +16,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.Services.MailServices;
 import com.Services.OtpGeneratorServices;
 import com.entity.UserEntity;
 import com.repository.UserRepository;
 
+import ch.qos.logback.core.util.FileUtil;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -39,8 +44,8 @@ public class SessionController {
 		return "login";
 	}
 	
-	@GetMapping("/signin")
-	public String getSigninPage() {
+	@GetMapping("/signup")
+	public String getSignupPage() {
 		return "signin";
 	}
 	
@@ -55,13 +60,22 @@ public class SessionController {
 	}
 	
 	@PostMapping("createuser")
-	public String createNewUser(@RequestParam String cnf_password, UserEntity user, Model model) {
+	public String createNewUser(@RequestParam String cnf_password, UserEntity user, Model model, @RequestParam MultipartFile profilePic, HttpSession session) {
 		
 		if(!user.getPassword().equals(cnf_password)) {
 			model.addAttribute("passmsg", "Re-enter Password");
-			return "signin";
+			return "signup";
 		} else {
 			try {
+				String filePath = "F:\\2.Royal\\Spring - Tejas Sir\\expence_manager\\src\\main\\webapp\\user_profile_image\\"+user.getEmail();
+				String fileName = user.getFirstname()+"-"+user.getEmail()+"."+getFileExtension(profilePic.getOriginalFilename());
+				File profileImage = new File(filePath, fileName);
+				if(!profilePic.getContentType().startsWith("image")) {
+					session.setAttribute("msg", "Image only accepted.");
+					return "redirect:/signup";
+				}
+				FileUtils.writeByteArrayToFile(profileImage, profilePic.getBytes());
+				user.setProfile_path("user_profile_image/"+user.getEmail()+"/"+fileName);
 				user.setPassword(passwordEncoder.encode(user.getPassword()));
 				
 				LocalDateTime now = LocalDateTime.now(ZoneId.of("America/Chicago"));
@@ -74,7 +88,7 @@ public class SessionController {
 			}
 			userRepository.save(user);
 		}
-		return "/";
+		return "redirect:/";
 	}
 	
 	@PostMapping("/authenticate")
@@ -176,8 +190,25 @@ public class SessionController {
 	}
 	
 	@PostMapping("updateprofile")
-	public String updateProfile(UserEntity user) {
+	public String updateProfile(UserEntity user, @RequestParam MultipartFile profilePic, HttpSession session) {
 		Optional<UserEntity> dbuser = userRepository.findByEmail(user.getEmail());
+		
+		if(profilePic != null && !profilePic.isEmpty()) {			
+			String filePath = "F:\\2.Royal\\Spring - Tejas Sir\\expence_manager\\src\\main\\webapp\\user_profile_image\\"+user.getEmail();
+			String fileName = user.getFirstname()+"-"+user.getEmail().substring(0, user.getEmail().lastIndexOf("@"))+"."+getFileExtension(profilePic.getOriginalFilename());
+			File profileImage = new File(filePath, fileName);
+			
+			if(!profilePic.getContentType().startsWith("image")) {
+				session.setAttribute("msg", "Image only accepted.");
+				return "redirect:/signup";
+			}
+			try {
+				FileUtils.writeByteArrayToFile(profileImage, profilePic.getBytes());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			dbuser.get().setProfile_path("user_profile_image/"+user.getEmail()+"/"+fileName);
+		}
 		dbuser.get().setFirstname(user.getFirstname());
 		dbuser.get().setLastname(user.getLastname());
 		dbuser.get().setEmail(user.getEmail());
@@ -186,5 +217,12 @@ public class SessionController {
 		userRepository.save(dbuser.get());
 		
 		return "redirect:/dashboard";
+	}
+	
+	public String getFileExtension(String filename) {
+		if(filename != null && filename.contains(".")) {
+			return filename.substring(filename.lastIndexOf(".")+1);
+		}
+		return "";
 	}
 }

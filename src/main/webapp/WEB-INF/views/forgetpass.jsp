@@ -19,7 +19,7 @@
             </div>
             <button type="submit" class="btn btn-primary w-100">Reset Password</button>
             <div class="d-flex justify-content-between mt-3">
-                <a href="login.html" class="text-decoration-none">Back to Login</a>
+                <a href="/" class="text-decoration-none">Back to Login</a>
             </div>
         </form>
     </div>

@@ -2,6 +2,8 @@ package com.entity;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,6 +27,7 @@ public class UserEntity {
 	private String password;
 	private String role = "user";
 	private String created_at;
+	private String profile_path = "";
 	
 	private String otp = "";
 	private String token = "";

@@ -24,7 +24,7 @@
             </div>
             <button type="submit" class="btn btn-primary w-100">Login</button>
             <div class="d-flex justify-content-between mt-3">
-                <a href="signin" class="text-decoration-none">Don't have an account? Sign up</a>
+                <a href="signup" class="text-decoration-none">Don't have an account? Sign up</a>
                 <a href="forgetpassword" class="text-decoration-none">Forgot Password?</a>
             </div>
         </form>
