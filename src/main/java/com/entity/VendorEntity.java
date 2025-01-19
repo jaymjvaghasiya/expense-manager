@@ -11,20 +11,19 @@ import lombok.Data;
 import lombok.ToString;
 
 @Entity
-@Table(name = "accounts")
+@Table(name = "vendors")
 @Data
-public class AccountEntity {
-
+public class VendorEntity {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
-	private String id;
+	private String vendorId;
 	private String title;
-	private Double amount;
-	private String account_type;
-	private String description;
+	private String vendorCategory;
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	@ToString.Exclude
 	private UserEntity user;
+	
 }

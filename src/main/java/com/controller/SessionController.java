@@ -80,6 +80,13 @@ public class SessionController {
 			return "signup";
 		} else {
 			try {
+				Optional<UserEntity> userOpt = userRepository.findByEmail(user.getEmail());
+				if(userOpt.isPresent()) {
+					session.setAttribute("msg", "This Email and Mobile Number has already registered.");
+					return "redirect:/signup";
+				}
+				
+				
 				String filePath = "F:\\2.Royal\\Spring - Tejas Sir\\expence_manager\\src\\main\\webapp\\user_profile_image\\"+user.getEmail();
 				String fileName = user.getFirstname()+"-"+user.getEmail()+"."+getFileExtension(profilePic.getOriginalFilename());
 				File profileImage = new File(filePath, fileName);

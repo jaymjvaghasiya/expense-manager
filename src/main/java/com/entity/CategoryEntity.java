@@ -11,17 +11,14 @@ import lombok.Data;
 import lombok.ToString;
 
 @Entity
-@Table(name = "accounts")
+@Table(name = "categories")
 @Data
-public class AccountEntity {
+public class CategoryEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
-	private String id;
+	private String categoryId;
 	private String title;
-	private Double amount;
-	private String account_type;
-	private String description;
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id")

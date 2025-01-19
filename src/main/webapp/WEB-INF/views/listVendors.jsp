@@ -239,140 +239,176 @@ html {
                             });
                         </script></element>
 
-<element id="6eed37f4-9321-4d68-bd2a-945b086fb5f4"
-	data-section-id="6eed37f4-9321-4d68-bd2a-945b086fb5f4"> <htmlCode>
-<div id="root" class="min-h-screen bg-neutral-900">
-	<div x-data="{ isOpen: false, showAddModal: false }"
-		class="min-h-screen">
-		
-		<!-- Main Content -->
-		<div class="lg:pl-64">
-			<!-- Top Navigation (Same as previous) -->
-			<nav class="bg-neutral-800 border-b border-neutral-700/30">
-				<!-- Navigation content same as previous -->
-			</nav>
+<element id="44a72580-2785-4483-ab10-ceb888745119" data-section-id="44a72580-2785-4483-ab10-ceb888745119">
 
-			<!-- Accounts Management Section -->
-			<section id="accounts_management" class="p-6">
-				<div class="flex justify-between items-center mb-6">
-					<h1 class="text-2xl font-bold text-white">Accounts Management</h1>
-					<button @click="showAddModal = true"
-						class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 flex items-center">
-						<svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor"
-							viewBox="0 0 24 24">
-                                    <path stroke-linecap="round"
-								stroke-linejoin="round" stroke-width="2"
-								d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+    <htmlCode>
+        <div id="root" class="min-h-screen bg-neutral-900">
+            <div x-data="{ isOpen: false, showAddVendor: false }" class="min-h-screen">
+                <!-- Main Content -->
+                <div class="lg:pl-64">
+                    <section id="vendor_directory" class="p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h1 class="text-2xl font-bold text-white">Vendor Directory</h1>
+                            <button @click="showAddVendor = true"
+                                class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-200 flex items-center">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                                 </svg>
-						Add New Account
-					</button>
-				</div>
+                                Add New Vendor
+                            </button>
+                        </div>
 
-				<!-- Accounts Grid -->
-				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-					<!-- Account Card 1 -->
-					<c:forEach items="${accounts}" var="a" varStatus="status">
-					    <div class="bg-neutral-800 rounded-lg border border-neutral-700/30 p-6">
-					        <div class="flex justify-between items-start mb-4">
-					            <div class="flex items-center">
-					                <div class="p-3 bg-blue-500/10 rounded-full mr-4">
-					                    <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
-					                    </svg>
-					                </div>
-					                <div>
-					                    <h3 class="text-lg font-semibold text-white">${a.title}</h3>
-					                    <p class="text-neutral-400">${a.account_type}</p>
-					                </div>
-					            </div>
-					            <div class="relative dropdown">
-					                <button id="dropdownButton-${status.index}" class="text-neutral-400 hover:text-white focus:outline-none">
-					                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-					                    </svg>
-					                </button>
-					                <ul id="dropdownMenu-${status.index}" class="absolute right-0 mt-2 bg-neutral-800 border border-neutral-700/30 text-white rounded-lg shadow-lg hidden">
-					                    <li class="px-4 py-2 hover:bg-neutral-700 cursor-pointer" onclick="editItem(${a.id})"><a href="editaccount?accountId=${a.id}">Update</a></li>
-					                    <li class="px-4 py-2 hover:bg-neutral-700 cursor-pointer" onclick="deleteItem(${a.id})"><a href="deleteaccount?accountId=${a.id}">Delete</a></li>
-					                </ul>
-					            </div>
-					        </div>
-					        <div class="mb-4">
-					            <span class="text-2xl font-bold text-white">${a.amount}</span>
-					        </div>
-					    </div>
-					</c:forEach>
-				</div>
+                        <!-- Vendor Stats -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                            <div class="bg-neutral-800 rounded-lg border border-neutral-700/30 p-6">
+                                <h3 class="text-neutral-400 mb-2">Total Vendors</h3>
+                                <p class="text-2xl font-bold text-purple-500">24</p>
+                            </div>
+                            <div class="bg-neutral-800 rounded-lg border border-neutral-700/30 p-6">
+                                <h3 class="text-neutral-400 mb-2">Active This Month</h3>
+                                <p class="text-2xl font-bold text-green-500">18</p>
+                            </div>
+                            <div class="bg-neutral-800 rounded-lg border border-neutral-700/30 p-6">
+                                <h3 class="text-neutral-400 mb-2">Total Spent</h3>
+                                <p class="text-2xl font-bold text-blue-500">$15,750.00</p>
+                            </div>
+                        </div>
 
-				<!-- Add Account Modal -->
-				<div x-show="showAddModal"
-					class="fixed inset-0 z-50 overflow-y-auto" x-cloak>
-					<div class="flex items-center justify-center min-h-screen px-4">
-						<div class="fixed inset-0 bg-black opacity-50"></div>
-						<div
-							class="relative bg-neutral-800 rounded-lg max-w-md w-full p-6">
-							<div class="flex justify-between items-center mb-4">
-								<h3 class="text-xl font-bold text-white">Add New Account</h3>
-								<button @click="showAddModal = false"
-									class="text-neutral-400 hover:text-white">
-									<svg class="w-6 h-6" fill="none" stroke="currentColor"
-										viewBox="0 0 24 24">
-                                                <path
-											stroke-linecap="round" stroke-linejoin="round"
-											stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                                            </svg>
-								</button>
-							</div>
-							<form class="space-y-4" action="addnewaccount" method="post">
-								<div>
-									<label class="block text-sm font-medium text-neutral-300 mb-1">Account
-										Name</label> <input type="text" name="title"
-										class="w-full px-3 py-2 bg-neutral-700 border border-neutral-600 rounded-lg text-white focus:outline-none focus:border-blue-500">
-								</div>
-								<div>
-									<label class="block text-sm font-medium text-neutral-300 mb-1">Account
-										Type</label> <select name="account_type"
-										class="w-full px-3 py-2 bg-neutral-700 border border-neutral-600 rounded-lg text-white focus:outline-none focus:border-blue-500">
-										<option value="Savings">Savings</option>
-										<option value="Current">Current</option>
-										<option value="Debit Card">Debit Card</option>
-										<option value="Credit Card">Credit Card</option>
-									</select>
-								</div>
-								<div>
-									<label class="block text-sm font-medium text-neutral-300 mb-1">Initial
-										Balance</label> <input type="number" name="amount"
-										class="w-full px-3 py-2 bg-neutral-700 border border-neutral-600 rounded-lg text-white focus:outline-none focus:border-blue-500">
-								</div>
-								<!-- <div>
-									<label class="block text-sm font-medium text-neutral-300 mb-1">Description
-										</label> <input type="text" name="description"
-										class="w-full px-3 py-2 bg-neutral-700 border border-neutral-600 rounded-lg text-white focus:outline-none focus:border-blue-500">
-								</div> -->
-								<div>
-                                    <label
-                                        class="block text-sm font-medium text-neutral-300 mb-1">Description</label>
-                                    <textarea name="description"
-                                        class="w-full px-3 py-2 bg-neutral-700 border border-neutral-600 rounded-lg text-white focus:outline-none focus:border-blue-500"
-                                        rows="3"></textarea>
+                        <!-- Vendor Grid -->
+                        <div class="bg-neutral-800 rounded-lg border border-neutral-700/30 p-6">
+                            <div class="flex justify-between items-center mb-6">
+                                <div class="flex items-center space-x-4">
+                                    <input type="text" placeholder="Search vendors..."
+                                        class="px-4 py-2 bg-neutral-700 border border-neutral-600 rounded-lg text-white focus:outline-none focus:border-purple-500">
+                                    <select
+                                        class="px-4 py-2 bg-neutral-700 border border-neutral-600 rounded-lg text-white focus:outline-none focus:border-purple-500">
+                                        <option>All Categories</option>
+                                        <option>Utilities</option>
+                                        <option>Supplies</option>
+                                        <option>Services</option>
+                                    </select>
                                 </div>
-								<div class="flex justify-end space-x-3">
-									<button type="button" @click="showAddModal = false"
-										class="px-4 py-2 text-neutral-400 hover:text-white">
-										Cancel</button>
-									<button type="submit"
-										class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-										Add Account</button>
-								</div>
-							</form>
+                                <div class="flex space-x-2">
+                                    <button class="p-2 text-neutral-400 hover:text-white">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                                        </svg>
+                                    </button>
+                                    <button class="p-2 text-neutral-400 hover:text-white">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <!-- Vendor Cards -->
+                                <c:forEach items="${vendors}" var="v" varStatus="status">
+								    <div class="bg-neutral-700/30 rounded-lg p-4">
+								        <div class="flex items-start justify-between">
+								            <div class="flex items-center">
+								                <img src="https://avatar.iran.liara.run/public" alt="Vendor Logo"
+								                    class="w-12 h-12 rounded-full">
+								                <div class="ml-3">
+								                    <h3 class="text-white font-semibold">${v.title}</h3>
+								                    <p class="text-neutral-400 text-sm">${v.vendorCategory}</p>
+								                </div>
+								            </div>
+								            <div x-data="{ open: false }" class="relative">
+								                <!-- Button to trigger the dropdown -->
+								                <button @click="open = !open" class="text-neutral-400 hover:text-white">
+								                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+								                            d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+								                    </svg>
+								                </button>
+								                <!-- Dropdown menu -->
+								                <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-32 bg-neutral-800 text-white rounded-lg shadow-lg z-10">
+								                    <ul>
+								                        <li>
+								                            <a href="editvendor?vendorId=${v.vendorId}" class="block px-4 py-2 text-sm hover:bg-purple-600">
+								                                Update
+								                            </a>
+								                        </li>
+								                        <li>
+								                            <a href="deletevendor?vendorId=${v.vendorId}" class="block px-4 py-2 text-sm hover:bg-red-600">
+								                                Delete
+								                            </a>
+								                        </li>
+								                    </ul>
+								                </div>
+								            </div>
+								        </div>
+								    </div>
+								</c:forEach>
+
+                            </div>
+                        </div>
+
+                        <!-- Add Vendor Modal -->
+                        <div x-show="showAddVendor" class="fixed inset-0 z-50 overflow-y-auto" x-cloak>
+						    <div class="flex items-center justify-center min-h-screen px-4">
+						        <div class="fixed inset-0 bg-black opacity-50"></div>
+						        <div class="relative bg-neutral-800 rounded-lg max-w-md w-full p-6">
+						            <div class="flex justify-between items-center mb-4">
+						                <h3 class="text-xl font-bold text-white">Add New Vendor</h3>
+						                <button @click="showAddVendor = false" class="text-neutral-400 hover:text-white">
+						                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+						                            d="M6 18L18 6M6 6l12 12" />
+						                    </svg>
+						                </button>
+						            </div>
+						            <form class="space-y-4" action="addvendor" method="post">
+						                <div>
+						                    <label class="block text-sm font-medium text-neutral-300 mb-1">Vendor Name</label>
+						                    <input type="text" name="title" x-ref="vendorName"
+						                        class="w-full px-3 py-2 bg-neutral-700 border border-neutral-600 rounded-lg text-white focus:outline-none focus:border-purple-500"
+						                        x-model="vendorName">
+						                </div>
+						                <div>
+						                    <label class="block text-sm font-medium text-neutral-300 mb-1">Category</label>
+						                    <select name="vendorCategory"
+						                        class="w-full px-3 py-2 bg-neutral-700 border border-neutral-600 rounded-lg text-white focus:outline-none focus:border-purple-500">
+						                        <option>IT Services</option>
+						                        <option>Supplies</option>
+						                        <option>Utilities</option>
+						                        <option>Other</option>
+						                    </select>
+						                </div>
+						                <div class="flex justify-end space-x-3">
+						                    <button type="button" @click="showAddVendor = false" class="px-4 py-2 text-neutral-400 hover:text-white">
+						                        Cancel
+						                    </button>
+						                    <input type="submit" value="Add Vendor" 
+						                        :disabled="!vendorName"
+						                        class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:bg-gray-600">
+						                </div>
+						            </form>
+						        </div>
+						    </div>
 						</div>
-					</div>
-				</div>
-			</section>
-		</div>
-	</div>
-</div>
-</htmlCode> </element>
+						
+						<script>
+						   document.addEventListener('alpine:init', () => {
+						       Alpine.data('addVendorForm', () => ({
+						           showAddVendor: false,
+						           vendorName: '',
+						       }));
+						   });
+						</script>
+						                        
+                    </section>
+                </div>
+            </div>
+        </div>
+    </htmlCode>
+</element>
+
 
 <div id="page_complete">
 	<script>
@@ -410,51 +446,3 @@ html {
 	</script>
 	</html>
 
-	<%-- <!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<!-- Bootstrap CSS -->
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-	rel="stylesheet">
-</head>
-<body>
-	<div>
-		<a href="addaccount">Add acount + </a> | <a href="dashboard">Back</a>
-	</div>
-	<table class="table">
-		<thead class="thead-dark">
-			<tr>
-				<th scope="col"></th>
-				<th scope="col">#</th>
-				<th scope="col">Title</th>
-				<th scope="col">Amount</th>
-				<th scope="col">Description</th>
-				<th scope="col">Action</th>
-			</tr>
-		</thead>
-		<tbody>
-			<c:forEach items="${accounts}" var="a" varStatus="status">
-				<tr>
-					<td><input type="radio" name="primaryAccount" value="${a.id}"
-						<c:if test="">checked</c:if> /></td>
-					<th scope="row">${status.index + 1}</th>
-					<td>${a.title}</td>
-					<td>${a.amount}</td>
-					<td>${a.description}</td>
-					<td>
-						<a href="editaccount?accountId=${a.id}">Update</a> | 
-						<a href="deleteaccount?accountId=${a.id}">Delete</a>
-					</td>
-				</tr>
-			</c:forEach>
-		</tbody>
-	</table>
-
-	<!-- Bootstrap JS (Optional for interactive components) -->
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html> --%>

@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.ToString;
 
 @Entity
 @Table(name = "users")
@@ -34,6 +35,13 @@ public class UserEntity {
 	private String otp_created_at = "";
 	
 	@OneToMany(mappedBy = "user")
-	List<AccountEntity> accounts;
+	@ToString.Exclude
+	private List<AccountEntity> accounts;
+	@OneToMany(mappedBy = "user")
+	@ToString.Exclude
+	private List<VendorEntity> vendors;
+	@OneToMany(mappedBy = "user")
+	@ToString.Exclude
+	private List<CategoryEntity> categories;
 	
 }
