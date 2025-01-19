@@ -241,7 +241,7 @@
 
     <htmlCode>
         <section id="category_settings" class="p-6">
-            <div x-data="{ isOpen: false, showAddVendor: false }" class="min-h-screen">
+            <div x-data="{ isOpen: false, showAddVendor: true }" class="min-h-screen">
                 <!-- Main Content -->
                 <div class="lg:pl-64">
                     <!-- Header with Add Category Button -->
@@ -253,112 +253,43 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                             </svg>
-                            Add New Sub-category
+                            Update Sub-category
                         </button>
                     </div>
 
-                    <!-- Category Rules Table -->
-                    <div class="border border-gray-200 rounded-lg bg-white">
-                        <div class="p-6 border-b border-gray-200">
-                            <h2 class="text-lg font-semibold text-gray-800">Category Rules</h2>
-                        </div>
-                        <div class="overflow-x-auto">
-                            <table class="w-full">
-                                <thead class="bg-gray-50">
-                                    <tr>
-                                        <th
-                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Sub-category</th>
-                                        <th
-                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Category</th>
-                                        <th
-                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white divide-y divide-gray-200">
-                                	<c:forEach items="${subcategories}" var="sc" varStatus="status">
-	                                    <tr>
-	                                        <td class="px-6 py-4 whitespace-nowrap">
-	                                            <div class="flex items-center">
-	                                                <div class="p-2 bg-blue-100 rounded-full mr-3">
-	                                                    <svg class="h-4 w-4 text-blue-600" fill="none" viewBox="0 0 24 24"
-	                                                        stroke="currentColor">
-	                                                        <path stroke-linecap="round" stroke-linejoin="round"
-	                                                            stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-	                                                    </svg>
-	                                                </div>
-	                                                <div class="text-sm font-medium text-gray-900">${sc.title}</div>
-	                                            </div>
-	                                        </td>
-	                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${sc.mainCategory}</td>
-	                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-	                                            <div class="flex gap-3">
-	                                                <a href="editsubcategory?subcategoryId=${sc.subCatId}">
-		                                                <button class="text-gray-400 hover:text-gray-600">
-		                                                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-		                                                        stroke="currentColor">
-		                                                        <path stroke-linecap="round" stroke-linejoin="round"
-		                                                            stroke-width="2"
-		                                                            d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-		                                                    </svg>
-		                                                </button>
-	                                                </a>
-	                                                <a href="deletesubcategory?subcategoryId=${sc.subCatId}">
-		                                                <button class="text-gray-400 hover:text-red-600">
-		                                                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-		                                                        stroke="currentColor">
-		                                                        <path stroke-linecap="round" stroke-linejoin="round"
-		                                                            stroke-width="2"
-		                                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-		                                                    </svg>
-		                                                </button>
-	                                                </a>
-	                                            </div>
-	                                        </td>
-	                                    </tr>
-                                    </c:forEach>
-                            	</tbody>
-                            </table>
-                        </div>
-                    </div>
-                     
-                     <!-- Add Vendor Modal -->
+                    <!-- Add Vendor Modal -->
                         <div x-show="showAddVendor" class="fixed inset-0 z-50 overflow-y-auto" x-cloak>
 						    <div class="flex items-center justify-center min-h-screen px-4">
 						        <div class="fixed inset-0 bg-black opacity-50"></div>
 						        <div class="relative bg-neutral-800 rounded-lg max-w-md w-full p-6">
-						            <div class="flex justify-between items-center mb-4">
-						                <h3 class="text-xl font-bold text-white">Add New Sub-category</h3>
-						                <button @click="showAddVendor = false" class="text-neutral-400 hover:text-white">
-						                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-						                            d="M6 18L18 6M6 6l12 12" />
-						                    </svg>
-						                </button>
-						            </div>
-						            <form class="space-y-4" action="addsubcategory" method="post">
+						            <form class="space-y-4" action="updatesubcategory" method="post">
+						            <input type="hidden" name="subCatId" value="${subcategory.subCatId}">
 						                <div>
 						                    <label class="block text-sm font-medium text-neutral-300 mb-1">Sub-category Name</label>
-						                    <input type="text" name="title" x-ref="vendorName"
-						                        class="w-full px-3 py-2 bg-neutral-700 border border-neutral-600 rounded-lg text-white focus:outline-none focus:border-purple-500"
-						                        x-model="vendorName">
+						                    <input type="text" name="title" value="${subcategory.title}"
+												class="w-full px-3 py-2 bg-neutral-700 border border-neutral-600 rounded-lg text-white focus:outline-none focus:border-blue-500">
+									    
 						                </div>
 						                <div>
-											<label class="block text-sm font-medium text-neutral-300 mb-1">Category
-												Type</label> <select name="mainCategory"
+											<label class="block text-sm font-medium text-neutral-300 mb-1">Category Type</label>
+											<select name="mainCategory" value="${subcategory.category}"
 												class="w-full px-3 py-2 bg-neutral-700 border border-neutral-600 rounded-lg text-white focus:outline-none focus:border-blue-500">
 												<c:forEach items="${categories}" var="c" varStatus="status">
-													<option value="${c.categoryId}">${c.title}</option>
+													<option value="${c.categoryId}" 
+														<c:if test="${c.categoryId == subcategory.category.categoryId}">selected</c:if>>
+														${c.title}
+													</option>
 												</c:forEach>
 											</select>
 										</div>
+
 						                <div class="flex justify-end space-x-3">
-						                    <button type="button" @click="showAddVendor = false" class="px-4 py-2 text-neutral-400 hover:text-white">
-						                        Cancel
-						                    </button>
-						                    <input type="submit" value="Add Sub-Category"
+						                	<a href="listsubcategories">
+							                    <button type="button" @click="showAddVendor = false" class="px-4 py-2 text-neutral-400 hover:text-white">
+							                        Cancel
+							                    </button>
+						                    </a>
+						                    <input type="submit" value="Update Sub-category"
 						                        class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:bg-gray-600">
 						                </div>
 						            </form>

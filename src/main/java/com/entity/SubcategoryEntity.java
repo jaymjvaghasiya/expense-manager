@@ -19,6 +19,7 @@ public class SubcategoryEntity {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private String subCatId;
 	private String title;
+	private String mainCategory;
 	
 	@ManyToOne
 	@JoinColumn(name = "category_id")
