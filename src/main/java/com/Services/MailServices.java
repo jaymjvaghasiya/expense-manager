@@ -19,4 +19,14 @@ public class MailServices {
         message.setFrom("hr@srk.in");
         mailSender.send(message);
     }
+	
+
+	public void sendResetPassLinkEmail(String email, String token) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject("Mail for Reset Password");
+        message.setText("Link to reset password : " + "http://localhost:9999/setpassword?token=" + token);
+        message.setFrom("hr@srk.in");
+        mailSender.send(message);
+    }
 }

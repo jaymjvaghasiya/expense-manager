@@ -9,6 +9,7 @@ import com.entity.UserEntity;
 public interface UserRepository extends JpaRepository<UserEntity, String> {
 
 	Optional<UserEntity> findByEmail(String email);
+	Optional<UserEntity> findByToken(String token);
 	
 //	fidByEmailAndUpdate(String firstname, String lastname, )
 }

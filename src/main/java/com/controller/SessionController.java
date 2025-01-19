@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.Services.MailServices;
 import com.Services.OtpGeneratorServices;
+import com.Services.ResetPasswordLink;
 import com.entity.UserEntity;
 import com.repository.UserRepository;
 
@@ -37,6 +38,8 @@ public class SessionController {
 	OtpGeneratorServices generateOtp;
 	@Autowired
 	MailServices sendMail;
+	@Autowired
+	ResetPasswordLink resetPassLink;
 	
 	@GetMapping("/")
 	public String getLoginPage(HttpSession session) {
@@ -57,6 +60,16 @@ public class SessionController {
 	@GetMapping("/dashboard")
 	public String getDashboard() {
 		return "dashboard";
+	}
+	
+	@GetMapping("/setpassword")
+	public String getResetPassPage() {
+		return "setpassword";
+	}
+	
+	@GetMapping("/sidebar")
+	public String getSideBar() {
+		return "sidebar";
 	}
 	
 	@PostMapping("createuser")
@@ -101,12 +114,14 @@ public class SessionController {
 			boolean flag = passwordEncoder.matches(password, userEntity.getPassword());
 			if(flag) {
 				session.setAttribute("user_email", userEntity.getEmail());
+				session.setAttribute("user", userEntity);
+				model.addAttribute("user", userEntity);
 				return "dashboard";
 			} else {
 				model.addAttribute("passmsg", "Password does not match please try again.");
 			}
 		}
-		return "/";
+		return "login";
 	}
 	
 	@PostMapping("sendotp")
@@ -130,6 +145,29 @@ public class SessionController {
 			sendMail.sendSimpleEmail(email, otp);
 		}
 		return "otppage";
+	}
+	
+	@PostMapping("sendresetasswordlink")
+	public String sendResetPassLink(@RequestParam String email, Model model) {
+		Optional<UserEntity> user = userRepository.findByEmail(email);
+		if(user == null) {
+			model.addAttribute("nousermsg", "User does not exists.");
+		} else {
+			model.addAttribute("email", email);
+			String token = resetPassLink.generateResetPassToken();
+			
+			LocalDateTime now = LocalDateTime.now(ZoneId.of("America/Chicago"));
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+	        String otp_created_at = now.format(formatter);
+	        
+	        UserEntity userEntity = user.get();
+	        userEntity.setToken(token);
+	        userEntity.setOtp_created_at(otp_created_at);
+	        userRepository.save(userEntity);
+	        
+	        sendMail.sendResetPassLinkEmail(email, token);
+		}
+		return "login";
 	}
 	
 	@PostMapping("/checkotp")
@@ -179,6 +217,25 @@ public class SessionController {
 		
 		
 		return "redirect:/";
+	}
+	
+	@PostMapping("changepass")
+	public String changePasswordByLink(@RequestParam String password, @RequestParam String cnf_password, @RequestParam String token, Model model, HttpSession session) {
+		
+		if(!password.equals(cnf_password)) {
+			session.setAttribute("msg", "Password does not match please enter again.");
+			return "redirect:/setpassword";
+		}
+		
+		model.addAttribute("email", token);
+		Optional<UserEntity> user = userRepository.findByToken(token);
+		UserEntity userEntity = user.get();
+		userEntity.setPassword(passwordEncoder.encode(password));
+		userEntity.setToken("");
+		userRepository.save(userEntity);
+		
+		
+		return "login";
 	}
 	
 	@GetMapping("editprofile")	

@@ -19,6 +19,7 @@ public class AccountEntity {
 	private String id;
 	private String title;
 	private Double amount;
+	private String account_type;
 	private String description;
 	
 	@ManyToOne
