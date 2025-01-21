@@ -63,3 +63,9 @@ a[href]:after {
 	content: " (" attr(href) ")";
 }
 }
+
+.hr_f{
+	display: flex;
+	justify-content: space-arround;
+	gap: 0.8rem;
+}

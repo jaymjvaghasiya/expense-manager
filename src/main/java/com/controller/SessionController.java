@@ -81,8 +81,9 @@ public class SessionController {
 		} else {
 			try {
 				Optional<UserEntity> userOpt = userRepository.findByEmail(user.getEmail());
-				if(userOpt.isPresent()) {
-					session.setAttribute("msg", "This Email and Mobile Number has already registered.");
+				Optional<UserEntity> userOpt2 = userRepository.findByMobile(user.getEmail());
+				if(userOpt.isPresent() || userOpt2.isPresent() ) {
+					session.setAttribute("msg", "This Email and Mobile Number has been already registered.");
 					return "redirect:/signup";
 				}
 				
@@ -114,8 +115,8 @@ public class SessionController {
 	@PostMapping("/authenticate")
 	public String authenticateUser(@RequestParam String email, @RequestParam String password, Model model, HttpSession session) {
 		Optional<UserEntity> user = userRepository.findByEmail(email);
-		if(user == null) {
-			model.addAttribute("nousermsg", "User doen not exists.");
+		if(user.isEmpty()) {
+			model.addAttribute("msg", "Email or Password is incorrect, please check !!!");
 		} else {
 			UserEntity userEntity = user.get(); 
 			boolean flag = passwordEncoder.matches(password, userEntity.getPassword());
@@ -125,7 +126,7 @@ public class SessionController {
 				model.addAttribute("user", userEntity);
 				return "dashboard";
 			} else {
-				model.addAttribute("passmsg", "Password does not match please try again.");
+				model.addAttribute("msg", "Email or Password is incorrect, please check !!!");
 			}
 		}
 		return "login";
@@ -279,6 +280,8 @@ public class SessionController {
 		dbuser.get().setMobile(user.getMobile());
 		
 		userRepository.save(dbuser.get());
+		
+		session.setAttribute("user", dbuser.get());
 		
 		return "redirect:/dashboard";
 	}

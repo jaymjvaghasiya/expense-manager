@@ -71,6 +71,7 @@
         <div class="max-w-md w-full bg-neutral-800 rounded-lg shadow-xl p-8 m-4 animate__animated animate__fadeIn">
             <h2 class="text-2xl font-bold text-center text-white mb-8">Welcome Back</h2>
             
+            <span style="color: red;">${msg}</span>
             <form class="space-y-6" action="authenticate" method="post">
                 <div>
                     <label class="text-white block text-sm font-medium mb-2" for="email">Email Address</label>
