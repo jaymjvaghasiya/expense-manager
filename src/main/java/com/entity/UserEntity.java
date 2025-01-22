@@ -46,4 +46,8 @@ public class UserEntity {
 	@OneToMany(mappedBy = "user")
 	@ToString.Exclude
 	private List<SubcategoryEntity> subcategories;
+	@OneToMany(mappedBy = "user")
+	@ToString.Exclude
+	private List<ExpenseEntity> expenses;
+	
 }

@@ -33,5 +33,9 @@ public class AccountEntity {
 	
 	@OneToMany(mappedBy = "account")
 	@ToString.Exclude
-	List<IncomeEntity> incomes;
+	private List<IncomeEntity> incomes;
+	
+	@OneToMany(mappedBy = "account")
+	@ToString.Exclude
+	private List<ExpenseEntity> expenses;
 }
