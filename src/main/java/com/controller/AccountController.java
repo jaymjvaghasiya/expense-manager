@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,8 +27,12 @@ public class AccountController {
 	UserRepository userRepo;
 	
 	@GetMapping("listaccounts")
-	public String getListOfAccounts(Model model) {
-		List<AccountEntity> allAccounts = accountRepo.findAll();
+	public String getListOfAccounts(Model model, HttpSession session) {
+		String email = (String) session.getAttribute("user_email");
+		Optional<UserEntity> user = userRepo.findByEmail(email);
+		String uid = user.get().getUserId();
+		
+		List<AccountEntity> allAccounts = accountRepo.findAllByUser_UserId(uid);
 		model.addAttribute("accounts", allAccounts);
 		return "listAccount";
 	}

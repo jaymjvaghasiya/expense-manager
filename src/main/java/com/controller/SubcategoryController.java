@@ -30,9 +30,13 @@ public class SubcategoryController {
 	UserRepository userRepo;
 	
 	@GetMapping("listsubcategories")
-	public String getListOfcategories(Model model) {
-		List<CategoryEntity> allCategories = categoryRepo.findAll();
-		List<SubcategoryEntity> allSubcategories = subcategoryRepo.findAll();
+	public String getListOfcategories(Model model, HttpSession session) {
+		String email = (String) session.getAttribute("user_email");
+		Optional<UserEntity> user = userRepo.findByEmail(email);
+		String uid = user.get().getUserId();
+		
+		List<CategoryEntity> allCategories = categoryRepo.findAllByUser_UserId(uid);
+		List<SubcategoryEntity> allSubcategories = subcategoryRepo.findAllByUser_UserId(uid);
 		model.addAttribute("categories", allCategories);
 		model.addAttribute("subcategories", allSubcategories);
 		return "listSubcategories";

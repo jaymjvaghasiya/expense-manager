@@ -403,7 +403,7 @@
 						                    <div>
 						                        <label class="block text-sm font-medium text-neutral-300 mb-1">Description</label>
 						                        <textarea name="description"
-						                            class="w-full px-3 py-2 bg-neutral-700 border border-neutral-600 rounded-lg text-white focus:outline-none focus:border-purple-500"
+						                            class="w-full px-3 py-2 bg-neutral-700 border border-neutral-600 rounded-lg text-white focus:outline-none focus:border-green-500"
 						                            rows="3"></textarea>
 						                    </div>
 						                </div>

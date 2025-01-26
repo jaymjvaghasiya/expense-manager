@@ -43,21 +43,25 @@ public class ExpenseController {
 	
 	
 	@GetMapping("listexpenses")
-	public String getListExpenses(Model model) {
+	public String getListExpenses(Model model, HttpSession session) {
+		String email = (String) session.getAttribute("user_email");
+		Optional<UserEntity> user = userRepo.findByEmail(email);
+		String uid = user.get().getUserId();
 		
-		List<ExpenseEntity> expenses = expenseRepo.findAll();
+		
+		List<ExpenseEntity> expenses = expenseRepo.findAllByUser_UserId(uid);
 		model.addAttribute("expenses", expenses);
 		
-		List<AccountEntity> accounts = accountRepo.findAll();
+		List<AccountEntity> accounts = accountRepo.findAllByUser_UserId(uid);
 		model.addAttribute("accounts", accounts);
 		
-		List<VendorEntity> vendors = vendorRepo.findAll();
+		List<VendorEntity> vendors = vendorRepo.findAllByUser_UserId(uid);
 		model.addAttribute("vendors", vendors);
 		
-		List<CategoryEntity> categories = categoryRepo.findAll();
+		List<CategoryEntity> categories = categoryRepo.findAllByUser_UserId(uid);
 		model.addAttribute("categories", categories);
 		
-		List<SubcategoryEntity> subcategories = subcategoryRepo.findAll();
+		List<SubcategoryEntity> subcategories = subcategoryRepo.findAllByUser_UserId(uid);
 		model.addAttribute("subcategories", subcategories);
 		
 		return "listExpenses";
@@ -81,6 +85,9 @@ public class ExpenseController {
 		Optional<VendorEntity> vendor = vendorRepo.findByVendorId(vendor_no);
 		Optional<CategoryEntity> category = categoryRepo.findByCategoryId(category_no);
 		Optional<SubcategoryEntity> subcategory = subcategoryRepo.findBySubCatId(subcategory_no);
+		
+		Double finalAmount = account.get().getAmount() - expense.getAmount();
+		account.get().setAmount(finalAmount);
 		
 		expense.setUser(user.get());
 		expense.setAccount(account.get());

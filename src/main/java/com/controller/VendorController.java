@@ -26,8 +26,12 @@ public class VendorController {
 	UserRepository userRepo;
 	
 	@GetMapping("listvendors")
-	public String getListOfAccounts(Model model) {
-		List<VendorEntity> allVendors = vendorRepo.findAll();
+	public String getListOfAccounts(Model model, HttpSession session) {
+		String email = (String) session.getAttribute("user_email");
+		Optional<UserEntity> user = userRepo.findByEmail(email);
+		String uid = user.get().getUserId();
+		
+		List<VendorEntity> allVendors = vendorRepo.findAllByUser_UserId(uid);
 		model.addAttribute("vendors", allVendors);
 		return "listVendors";
 	}

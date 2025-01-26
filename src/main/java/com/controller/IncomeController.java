@@ -30,9 +30,13 @@ public class IncomeController {
 	IncomeRepository incomeRepo;
 	
 	@GetMapping("listincomes")
-	public String getAllIncomes(Model model) {
-		List<IncomeEntity> allIncomes = incomeRepo.findAll();
-		List<AccountEntity> allAccounts = accountRepo.findAll();
+	public String getAllIncomes(Model model, HttpSession session) {
+		String email = (String) session.getAttribute("user_email");
+		Optional<UserEntity> user = userRepo.findByEmail(email);
+		String uid = user.get().getUserId();
+		
+		List<IncomeEntity> allIncomes = incomeRepo.findAllByUser_UserId(uid);
+		List<AccountEntity> allAccounts = accountRepo.findAllByUser_UserId(uid);
 		model.addAttribute("incomes", allIncomes);
 		model.addAttribute("accounts", allAccounts);
 		return "listIncomes";
@@ -49,6 +53,10 @@ public class IncomeController {
 		UserEntity userEntity = user.get();
 		Optional<AccountEntity> account = accountRepo.findById(account_no);
 		AccountEntity accountEntity = account.get();
+		
+		Double totalAmount = accountEntity.getAmount() + income.getAmount();
+		accountEntity.setAmount(totalAmount);
+		
 		income.setAccount(accountEntity);
 		income.setUser(userEntity);
 		incomeRepo.save(income);

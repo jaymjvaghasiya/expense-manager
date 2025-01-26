@@ -1,5 +1,6 @@
 package com.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,4 +12,5 @@ import com.entity.SubcategoryEntity;
 public interface SubcategoryRepository extends JpaRepository<SubcategoryEntity, String> {
 
 	Optional<SubcategoryEntity> findBySubCatId(String subCatId);
+	List<SubcategoryEntity> findAllByUser_UserId(String UserId);
 }

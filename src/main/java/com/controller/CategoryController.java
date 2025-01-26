@@ -26,8 +26,12 @@ public class CategoryController {
 	UserRepository userRepo;
 	
 	@GetMapping("listcategories")
-	public String getListOfcategories(Model model) {
-		List<CategoryEntity> allCategories = categoryRepo.findAll();
+	public String getListOfcategories(Model model, HttpSession session) {
+		String email = (String) session.getAttribute("user_email");
+		Optional<UserEntity> user = userRepo.findByEmail(email);
+		String uid = user.get().getUserId();
+		
+		List<CategoryEntity> allCategories = categoryRepo.findAllByUser_UserId(uid);
 		model.addAttribute("categories", allCategories);
 		return "listCategories";
 	}

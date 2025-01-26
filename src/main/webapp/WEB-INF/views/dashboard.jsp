@@ -47,6 +47,8 @@
 <link rel="stylesheet" href="/css/styles.css">
 <!-- Enhanced Image Handler -->
 <script src="/js/demo.js"></script>
+<!-- Chart CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" integrity="sha512-CQBWl4fJHWbryGE+Pc7UAxWMUMNMWzWxF4SQo9CgkJIN1kx6djDQZjh3Y8SZ1d+6I+1zze6Z7kHXO7q3UyZAWw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 </head>
 
@@ -559,7 +561,7 @@ html {
 							Expenses</h3>
 						<div
 							class="h-80 bg-neutral-700/30 rounded-lg flex items-center justify-center">
-							<p class="text-neutral-400">Chart Placeholder</p>
+							<canvas id="expenseIncomeChart"></canvas>
 						</div>
 					</div>
 
@@ -623,6 +625,107 @@ html {
         console.log('Page complete');
     </script>
 	</body>
+ <script>
+        // Define labels and data for income and expenses
+
+        let incomeData = '${incomes}';
+        let parseIncomeData = JSON.parse(incomeData);
+        let expenseData = '${expenses}';
+        let parseExpenseData = JSON.parse(expenseData);
+        
+        let incomeKeys = Object.keys(parseIncomeData);
+        let expenseKeys = Object.keys(parseExpenseData);
+        
+        let incomeVals = Object.values(parseIncomeData);
+        let expenseVals = Object.values(parseExpenseData);
+        
+        const labels = Object.keys(parseIncomeData).map(function(yearMonth) {
+        	 let yearMonthStr = yearMonth.toString();
+        	 
+	       	 let year = yearMonthStr.substring(0, 4);
+	       	 let month = yearMonthStr.substring(4, 6); // Make sure month is always 2 digits
+	       	 return year + '-' + month; // Return as 'YYYY-MM'
+        })
+        
+        // Data configuration
+        const data = {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Income',
+                    data: incomeVals,
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)', // Blue
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1,
+                    color: '#F1F3F4'
+                },
+                {
+                    label: 'Expenses',
+                    data: expenseVals,
+                    backgroundColor: 'rgba(255, 99, 132, 0.5)', // Red
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1,
+                    color: '#F1F3F4'
+                }
+            ]
+        };
+
+        // Chart configuration
+        const config = {
+            type: 'bar',
+            data: data,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Expense vs Income (Monthly)',
+                        color: '#F1F3F4'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Amount (₹)',
+                            color: '#F1F3F4'
+                        },
+                        ticks: {
+                            font: {
+                                size: 14,
+                                weight: 'bold',
+                                family: 'Arial', // Optional: Use a custom font family
+                                color: '#FFFFFF' // Bright color for axis ticks
+                            }
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Months',
+                            color: '#F1F3F4'
+                        },
+                        ticks: {
+                            font: {
+                                size: 14,
+                                weight: 'bold',
+                                family: 'Arial', // Optional: Use a custom font family
+                                color: '#FFFFFF' // Bright color for axis ticks
+                            }
+                        }
+                    }
+                }
+            },
+        };
+
+        // Create the chart
+        const ctx = document.getElementById('expenseIncomeChart').getContext('2d');
+        new Chart(ctx, config);
+    </script>
 
 	</html>
 

@@ -1,5 +1,6 @@
 package com.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,4 +12,5 @@ import com.entity.IncomeEntity;
 public interface IncomeRepository extends JpaRepository<IncomeEntity, String>{
 
 	Optional<IncomeEntity> findByIncomeId(String incomeId);
+	List<IncomeEntity> findAllByUser_UserId(String userId);
 }
