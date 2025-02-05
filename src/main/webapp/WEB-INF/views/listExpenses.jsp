@@ -45,6 +45,13 @@
     <!-- Enhanced Image Handler -->
     <script src="/js/demo.js"></script>
     
+    <!-- select2 css plugin -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    
+    <style type="text/css">
+	    
+    </style>
+    
 </head>
 
 <body class="antialiased text-gray-800 min-h-screen flex flex-col">
@@ -384,8 +391,9 @@
 						                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 						                    <div>
 						                        <label class="block text-sm font-medium text-neutral-300 mb-1">Category</label>
-						                        <select name="category_no"
+						                        <select name="category_no" id="category" onchange="getSubCategory()"
 						                            class="w-full px-3 py-2 bg-neutral-700 border border-neutral-600 rounded-lg text-white focus:outline-none focus:border-blue-500">
+						                            	<option value="-1">Select Category</option>
 						                            <c:forEach items="${categories}" var="c" varStatus="status">
 						                                <option value="${c.categoryId}">${c.title}</option>
 						                            </c:forEach>
@@ -393,7 +401,7 @@
 						                    </div>
 						                    <div>
 						                        <label class="block text-sm font-medium text-neutral-300 mb-1">Sub-category</label>
-						                        <select name="subcategory_no"
+						                        <select name="subcategory_no" id="subcategory"
 						                            class="w-full px-3 py-2 bg-neutral-700 border border-neutral-600 rounded-lg text-white focus:outline-none focus:border-blue-500">
 						                            <c:forEach items="${subcategories}" var="sc" varStatus="status">
 						                                <option value="${sc.subCatId}">${sc.title}</option>
@@ -469,8 +477,77 @@
 </element>
 
 <div id="page_complete">
-    <script>
+    
+    <!-- jQuery link -->
+    	<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+		integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+		crossorigin="anonymous"></script>
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+		
+	 
+    <script type="text/javascript">
         console.log('Page complete');
+        
+/*         $(document).ready(function() {
+        	
+   	        
+        	$('#category').select2({
+				tags : true, // Allow manual typing
+				placeholder : "Select or type an option",
+				allowClear : false, // Optionally allow clearing the selection
+				tokenSeparators : [ ',', ' ' ],
+        	 	dropdownParent: $('#category').parent(), // Use parent div for dropdown
+             	theme: 'classic' // Optional: uses a cleaner theme
+				// Specify delimiters for adding tags
+			});
+        	
+       	 	$('#category').on('select2:select', function (e) {
+                const data = e.params.data;
+				console.log("select2:select");
+				console.log(data);
+				
+
+                // Check if the selected option is a new tag
+                if (data.id == data.text) {
+                    // Assign a value to the new tag (e.g., prefix "custom-" to its text)
+                    const newValue = '-1';
+                    const newOption = new Option(data.text, newValue, false, true);
+					console.log("set new");
+                    // Replace the new tag with the updated option
+                    $(this).append(newOption).trigger('change');
+                }else{
+                	getSubCategory();
+                }
+            });
+        }) */
+        
+        function getSubCategory() {
+            let categoryVal = document.getElementById("category").value;
+            if (categoryVal == -1) return;
+
+            let subCategory = document.getElementById("subcategory");
+            subCategory.innerHTML = ''; // Clear previous options
+
+            // Add default "Select Sub-category" option
+            $('#subcategory').append(new Option("Select Sub-category", "-1"));
+
+            $.get("getsubcatsbycats/" + categoryVal, function() {})
+                .done(function(data) {
+                    console.log("Data: ", data);
+
+                    // Append new options dynamically
+                    for (let i = 0; i < data.length; i++) {
+                        $('#subcategory').append(new Option(data[i].title, data[i].subCatId));
+                    }
+                })
+                .fail(function() {
+                    alert("Something went wrong. Please try again later...");
+                });
+        }
+
+        
     </script>
     </body>
 

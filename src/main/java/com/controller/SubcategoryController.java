@@ -84,7 +84,11 @@ public class SubcategoryController {
 	
 	@PostMapping("updatesubcategory")
 	public String updateCategory(SubcategoryEntity subcategory, Model model, HttpSession session) {
-		System.out.println("Vendor ID: " + subcategory.getSubCatId());
+
+		String email = (String) session.getAttribute("user_email");
+		Optional<UserEntity> user = userRepo.findByEmail(email);
+		UserEntity userEntity = user.get();
+		
 		if(subcategory.getTitle() == null || subcategory.getTitle().trim().length() == 0) {
 			model.addAttribute("msg", "Please Enter Vendor Title");
 			return "redirect:/listsubcategories";
@@ -93,6 +97,8 @@ public class SubcategoryController {
 		CategoryEntity categoryEntity = category.get();
 		subcategory.setMainCategory(categoryEntity.getTitle());
 		subcategory.setCategory(categoryEntity);
+		subcategory.setUser(userEntity);
+		System.out.println("user : " + user);
 		subcategoryRepo.save(subcategory);
 
 		return "redirect:/listsubcategories";

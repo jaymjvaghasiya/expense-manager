@@ -13,7 +13,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +27,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.Services.MailServices;
-import com.Services.OtpGeneratorServices;
-import com.Services.ResetPasswordLink;
+import com.services.MailServices;
+import com.services.OtpGeneratorServices;
+import com.services.ResetPasswordLink;
 import com.entity.ExpenseEntity;
 import com.entity.IncomeEntity;
 import com.entity.UserEntity;
@@ -319,16 +321,32 @@ public class SessionController {
 	
 	public void calculateIncomeAndExpense(Model model, HttpSession session) {
 		
+	    
+	    // Define a formatter for "yyyy-MM-dd"
+	    DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+	    // Format the current date
+	    LocalDate currentDate = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth());
+	    String currentFormattedDate = currentDate.format(formatter2);
+
+	    // Calculate the date 6 months ago and set it to the first day of that month
+	    LocalDate sixthLastMonthDate = currentDate.minusMonths(6).withDayOfMonth(1);
+	    String sixthLastFormattedDate = sixthLastMonthDate.format(formatter2);
+	    
+
 		String email = (String) session.getAttribute("user_email");
 		Optional<UserEntity> user = userRepo.findByEmail(email);
 		String uid = user.get().getUserId();
 		
-		List<IncomeEntity> incomes = incomeRepo.findAllByUser_UserId(uid);
-		List<ExpenseEntity> expenses = expenseRepo.findAllByUser_UserId(uid);
+		List<IncomeEntity> incomes = incomeRepo.findAllByUserAndTDate(uid, sixthLastFormattedDate, currentFormattedDate);
+		List<ExpenseEntity> expenses = expenseRepo.findAllByUserAndTDate(uid, sixthLastFormattedDate, currentFormattedDate);
 		 
 		Map<Integer, Double> monthIncomeMap =  new HashMap<>();
 		Map<Integer, Double> monthExpenseMap =  new HashMap<>();
+		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		
+		Set<Integer> allYearMonths = new TreeSet<>();
 		
 		for(IncomeEntity income : incomes) {
 			String dateString = income.getTranscationData();
@@ -337,29 +355,37 @@ public class SessionController {
 			Integer year = date.getYear();
 			Integer yearMonth = Integer.parseInt(year + "" + month);
 			
+			allYearMonths.add(yearMonth);
 			if(monthIncomeMap.containsKey(yearMonth)) {
 				monthIncomeMap.put(yearMonth, monthIncomeMap.get(yearMonth) + income.getAmount());
 			} else {				
 				monthIncomeMap.put(yearMonth, income.getAmount());
 			}
 		}
-		Map<Integer, Double> sortedMonthIncomeMap = new TreeMap<>(monthIncomeMap);
 		
 		for(ExpenseEntity expense: expenses) {
 			String dateString = expense.getTransactionDate();
 			LocalDate date = LocalDate.parse(dateString, formatter);
-			Integer month = Integer.parseInt(String.format("%02d", date.getMonthValue()));
+			String month = String.format("%02d", date.getMonthValue());
 			Integer year = date.getYear();
 			Integer yearMonth = Integer.parseInt(year + "" + month);
 			
+			allYearMonths.add(yearMonth);
 			if(monthExpenseMap.containsKey(yearMonth)) {
 				monthExpenseMap.put(yearMonth, monthExpenseMap.get(yearMonth) + expense.getAmount());
 			} else {				
 				monthExpenseMap.put(yearMonth, expense.getAmount());
 			}
 		}
-		Map<Integer, Double> sortedMonthExpenseMap = new TreeMap<>(monthExpenseMap);
 		
+		for (Integer yearMonth : allYearMonths) {
+		    monthIncomeMap.putIfAbsent(yearMonth, 0.00);
+		    monthExpenseMap.putIfAbsent(yearMonth, 0.00);
+		}
+		
+		Map<Integer, Double> sortedMonthIncomeMap = new TreeMap<>(monthIncomeMap);
+		Map<Integer, Double> sortedMonthExpenseMap = new TreeMap<>(monthExpenseMap);
+
 		model.addAttribute("incomes", new Gson().toJson(sortedMonthIncomeMap));
 		model.addAttribute("expenses", new Gson().toJson(sortedMonthExpenseMap));
 	}
