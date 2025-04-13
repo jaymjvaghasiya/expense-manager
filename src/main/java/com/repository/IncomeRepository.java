@@ -22,4 +22,13 @@ public interface IncomeRepository extends JpaRepository<IncomeEntity, String>{
 		    @Param("startDate") String startDate, 
 		    @Param("endDate") String endDate
 		);
+	
+	@Query(value = "SELECT SUM(amount) FROM incomes WHERE user_id = ?1 AND EXTRACT(YEAR FROM transcation_data::DATE) = ?2", nativeQuery = true)
+	Double findTotalIncome(@Param("userId") String userId, @Param("year") Integer year);
+	
+	@Query(value = "SELECT SUM(amount) FROM incomes WHERE user_id = ?1 and EXTRACT(MONTH FROM transcation_data::DATE) = ?2", nativeQuery = true)
+	Double findMonthlyTotalIncome(@Param("userId") String userId, @Param("month") Integer month);
+	
+	@Query(value = "select * from incomes where user_id = ?1 order by 1 limit 5", nativeQuery = true)
+	List<IncomeEntity> findLetestIncome(@Param("userId") String userId);
 }

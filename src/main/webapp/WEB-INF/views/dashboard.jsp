@@ -141,89 +141,6 @@ html {
 			</button>
 
 			<!-- Sidebar -->
-			<%-- <nav id="sidebar"
-				class="fixed top-0 left-0 z-40 h-screen w-64 transform bg-gray-800 transition-transform duration-300 ease-in-out lg:translate-x-0"
-				:class="{'translate-x-0': isOpen, '-translate-x-full': !isOpen}"
-				@click.away="isOpen = false"
-				@resize.window="if (window.innerWidth > 1024) isOpen = false">
-				<div class="flex h-full flex-col">
-					<!-- Logo -->
-					<div
-						class="flex h-16 items-center justify-center border-b border-gray-700">
-						<span class="text-xl font-bold text-white">ExpenseManager</span>
-					</div>
-
-					<!-- Navigation Links -->
-					<div class="flex-1 overflow-y-auto py-4">
-						<nav class="space-y-1 px-2">
-							<a href="#dashboard"
-								class="nav-link active-link flex items-center rounded-lg px-4 py-2 text-sm font-medium text-gray-300">
-								<svg class="mr-3 h-6 w-6" fill="none" viewBox="0 0 24 24"
-									stroke="currentColor">
-                                            <path stroke-linecap="round"
-										stroke-linejoin="round" stroke-width="2"
-										d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                                        </svg> Dashboard
-							</a> <a href="listaccounts"
-								class="nav-link flex items-center rounded-lg px-4 py-2 text-sm font-medium text-gray-300">
-								<svg class="mr-3 h-6 w-6" fill="none" viewBox="0 0 24 24"
-									stroke="currentColor">
-                                            <path stroke-linecap="round"
-										stroke-linejoin="round" stroke-width="2"
-										d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-                                        </svg> Accounts
-							</a> <a href="#expense"
-								class="nav-link flex items-center rounded-lg px-4 py-2 text-sm font-medium text-gray-300">
-								<svg class="mr-3 h-6 w-6" fill="none" viewBox="0 0 24 24"
-									stroke="currentColor">
-                                            <path stroke-linecap="round"
-										stroke-linejoin="round" stroke-width="2"
-										d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg> Expense
-							</a> <a href="#income"
-								class="nav-link flex items-center rounded-lg px-4 py-2 text-sm font-medium text-gray-300">
-								<svg class="mr-3 h-6 w-6" fill="none" viewBox="0 0 24 24"
-									stroke="currentColor">
-                                            <path stroke-linecap="round"
-										stroke-linejoin="round" stroke-width="2"
-										d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                        </svg> Income
-							</a> <a href="#vendor"
-								class="nav-link flex items-center rounded-lg px-4 py-2 text-sm font-medium text-gray-300">
-								<svg class="mr-3 h-6 w-6" fill="none" viewBox="0 0 24 24"
-									stroke="currentColor">
-                                            <path stroke-linecap="round"
-										stroke-linejoin="round" stroke-width="2"
-										d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                                        </svg> Vendors
-							</a> <a href="#category"
-								class="nav-link flex items-center rounded-lg px-4 py-2 text-sm font-medium text-gray-300">
-								<svg class="mr-3 h-6 w-6" fill="none" viewBox="0 0 24 24"
-									stroke="currentColor">
-                                            <path stroke-linecap="round"
-										stroke-linejoin="round" stroke-width="2"
-										d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                                        </svg> Category
-							</a>
-						</nav>
-					</div>
-
-					<!-- User Profile -->
-					<div class="border-t border-gray-700 p-4">
-					<a href="editprofile">
-						<div class="flex items-center">
-							<img class="h-8 w-8 rounded-full"
-								src="${user.profile_path}" alt="User avatar">
-							<div class="ml-3">
-								<p class="text-sm font-medium text-white">${user.firstname}  ${user.lastname}</p>
-								<p class="text-xs text-gray-400">${user.email}</p>
-							</div>
-						</div>
-					</a>
-					</div>
-				</div>
-			</nav>
-			 --%>
 			 <jsp:include page="sidebar.jsp" />
 		</div>
 
@@ -338,7 +255,7 @@ html {
 						<div class="flex items-center justify-between">
 							<div>
 								<h3 class="text-lg font-semibold text-white">Total Balance</h3>
-								<p class="text-2xl font-bold text-green-500">$24,500.00</p>
+								<p class="text-2xl font-bold text-green-500">${totalBalance}</p>
 							</div>
 							<div class="p-3 bg-green-500/10 rounded-full">
 								<svg class="w-6 h-6 text-green-500" fill="none"
@@ -356,8 +273,8 @@ html {
 						class="p-6 bg-neutral-800 rounded-lg border border-neutral-700/30">
 						<div class="flex items-center justify-between">
 							<div>
-								<h3 class="text-lg font-semibold text-white">Total Expenses</h3>
-								<p class="text-2xl font-bold text-red-500">$12,750.00</p>
+								<h3 class="text-lg font-semibold text-white">Monthly Total Expenses</h3>
+								<p class="text-2xl font-bold text-red-500">${monthlyTotalExpense}</p>
 							</div>
 							<div class="p-3 bg-red-500/10 rounded-full">
 								<svg class="w-6 h-6 text-red-500" fill="none"
@@ -374,8 +291,8 @@ html {
 						class="p-6 bg-neutral-800 rounded-lg border border-neutral-700/30">
 						<div class="flex items-center justify-between">
 							<div>
-								<h3 class="text-lg font-semibold text-white">Total Income</h3>
-								<p class="text-2xl font-bold text-blue-500">$37,250.00</p>
+								<h3 class="text-lg font-semibold text-white">Monthly Total Income</h3>
+								<p class="text-2xl font-bold text-blue-500">${monthlyTotalIncome}</p>
 							</div>
 							<div class="p-3 bg-blue-500/10 rounded-full">
 								<svg class="w-6 h-6 text-blue-500" fill="none"
@@ -406,33 +323,17 @@ html {
 									</tr>
 								</thead>
 								<tbody>
-									<tr class="border-b border-neutral-700/30">
-										<td class="px-6 py-4">2024-01-15</td>
-										<td class="px-6 py-4">Office Supplies</td>
-										<td class="px-6 py-4">Expenses</td>
-										<td class="px-6 py-4 text-red-500">-$250.00</td>
-										<td class="px-6 py-4"><span
-											class="px-2 py-1 text-xs rounded-full bg-green-500/10 text-green-500">Completed</span>
-										</td>
-									</tr>
-									<tr class="border-b border-neutral-700/30">
-										<td class="px-6 py-4">2024-01-14</td>
-										<td class="px-6 py-4">Client Payment</td>
-										<td class="px-6 py-4">Income</td>
-										<td class="px-6 py-4 text-green-500">+$1,500.00</td>
-										<td class="px-6 py-4"><span
-											class="px-2 py-1 text-xs rounded-full bg-green-500/10 text-green-500">Completed</span>
-										</td>
-									</tr>
-									<tr class="border-b border-neutral-700/30">
-										<td class="px-6 py-4">2024-01-13</td>
-										<td class="px-6 py-4">Server Costs</td>
-										<td class="px-6 py-4">Expenses</td>
-										<td class="px-6 py-4 text-red-500">-$350.00</td>
-										<td class="px-6 py-4"><span
-											class="px-2 py-1 text-xs rounded-full bg-yellow-500/10 text-yellow-500">Pending</span>
-										</td>
-									</tr>
+									<c:forEach items="${tra}" var="t" varStatus="status">
+										<tr class="border-b border-neutral-700/30">
+											<td class="px-6 py-4">${t.transactionDate}</td>
+											<td class="px-6 py-4">${t.description}</td>
+											<td class="px-6 py-4">${t.category}</td>
+											<td class="px-6 py-4 text-red-500">${t.amount}</td>
+											<td class="px-6 py-4"><span
+												class="px-2 py-1 text-xs rounded-full bg-green-500/10 text-green-500">${t.status}</span>
+											</td>
+										</tr>
+									</c:forEach>	
 								</tbody>
 							</table>
 						</div>
@@ -482,8 +383,8 @@ html {
 						class="bg-neutral-800 rounded-lg border border-neutral-700/30 p-6">
 						<div class="flex items-center justify-between">
 							<div>
-								<p class="text-neutral-400">Total Income</p>
-								<h3 class="text-2xl font-bold text-green-500">$45,750.00</h3>
+								<p class="text-neutral-400">Yearly Total Income</p>
+								<h3 class="text-2xl font-bold text-green-500">${totalIncome}</h3>
 								<p class="text-sm text-green-400">+12.5% vs last month</p>
 							</div>
 							<div class="p-3 bg-green-500/10 rounded-full">
@@ -501,8 +402,8 @@ html {
 						class="bg-neutral-800 rounded-lg border border-neutral-700/30 p-6">
 						<div class="flex items-center justify-between">
 							<div>
-								<p class="text-neutral-400">Total Expenses</p>
-								<h3 class="text-2xl font-bold text-red-500">$32,450.00</h3>
+								<p class="text-neutral-400">Yearly Total Expenses</p>
+								<h3 class="text-2xl font-bold text-red-500">${totalExpense}</h3>
 								<p class="text-sm text-red-400">+8.2% vs last month</p>
 							</div>
 							<div class="p-3 bg-red-500/10 rounded-full">

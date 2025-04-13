@@ -2,6 +2,9 @@ package com.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,6 +27,7 @@ public class SubcategoryEntity {
 	private String title;
 	private String mainCategory;
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "category_id")
 	@ToString.Exclude
@@ -33,8 +37,5 @@ public class SubcategoryEntity {
 	@JoinColumn(name = "user_id")
 	@ToString.Exclude
 	private UserEntity user;
-	
-	@OneToMany(mappedBy = "subcategory")
-	@ToString.Exclude
-	private List<ExpenseEntity> expenses;
+
 }

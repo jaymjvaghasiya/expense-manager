@@ -403,9 +403,10 @@
 						                        <label class="block text-sm font-medium text-neutral-300 mb-1">Sub-category</label>
 						                        <select name="subcategory_no" id="subcategory"
 						                            class="w-full px-3 py-2 bg-neutral-700 border border-neutral-600 rounded-lg text-white focus:outline-none focus:border-blue-500">
-						                            <c:forEach items="${subcategories}" var="sc" varStatus="status">
+						                            	<option value="0">Select Sub-category</option>
+						                            <%-- <c:forEach items="${subcategories}" var="sc" varStatus="status">
 						                                <option value="${sc.subCatId}">${sc.title}</option>
-						                            </c:forEach>
+						                            </c:forEach> --%>
 						                        </select>
 						                    </div>
 						                </div>

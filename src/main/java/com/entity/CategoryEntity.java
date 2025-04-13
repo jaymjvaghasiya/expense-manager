@@ -2,6 +2,8 @@ package com.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,17 +25,10 @@ public class CategoryEntity {
 	private String categoryId;
 	private String title;
 
-	@OneToMany(mappedBy = "category")
-	@ToString.Exclude
-	private List<SubcategoryEntity> subcategories;
-
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	@ToString.Exclude
 	private UserEntity user;
 	
-	@OneToMany(mappedBy = "category")
-	@ToString.Exclude
-	private List<ExpenseEntity> expenses;
 	
 }

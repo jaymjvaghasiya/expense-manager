@@ -28,9 +28,6 @@ public class VendorEntity {
 	@JoinColumn(name = "user_id")
 	@ToString.Exclude
 	private UserEntity user;
-	
-	@OneToMany(mappedBy = "vendor")
-	@ToString.Exclude
-	private List<ExpenseEntity> expenses; 
+	 
 	
 }

@@ -7,9 +7,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -30,12 +28,15 @@ import org.springframework.web.multipart.MultipartFile;
 import com.services.MailServices;
 import com.services.OtpGeneratorServices;
 import com.services.ResetPasswordLink;
+import com.dto.TransactionDTO;
 import com.entity.ExpenseEntity;
 import com.entity.IncomeEntity;
 import com.entity.UserEntity;
 import com.google.gson.Gson;
+import com.repository.AccountRepository;
 import com.repository.ExpenseRepository;
 import com.repository.IncomeRepository;
+import com.repository.TransactionRepository;
 import com.repository.UserRepository;
 
 import ch.qos.logback.core.util.FileUtil;
@@ -51,6 +52,8 @@ public class SessionController {
 	@Autowired
 	UserRepository userRepository;
 	@Autowired
+	AccountRepository accountRepo;
+	@Autowired
 	OtpGeneratorServices generateOtp;
 	@Autowired
 	MailServices sendMail;
@@ -60,6 +63,8 @@ public class SessionController {
 	IncomeRepository incomeRepo;
 	@Autowired
 	ExpenseRepository expenseRepo;
+	@Autowired
+	TransactionRepository transRepo;
 	
 	@GetMapping("/")
 	public String getLoginPage(HttpSession session) {
@@ -388,5 +393,28 @@ public class SessionController {
 
 		model.addAttribute("incomes", new Gson().toJson(sortedMonthIncomeMap));
 		model.addAttribute("expenses", new Gson().toJson(sortedMonthExpenseMap));
+		
+		Integer year = currentDate.getYear();
+		Integer month = currentDate.getMonthValue();
+		
+	    Double totalIncome = incomeRepo.findTotalIncome(uid, year);
+	    Double totalExpense = expenseRepo.findTotalExpense(uid, year);
+	    
+	    Double monthlyTotalIncome = incomeRepo.findMonthlyTotalIncome(uid, month);
+	    Double monthlyTotalExpense = expenseRepo.findMonthlyTotalExpense(uid, month);
+	    
+	    Double totalBalance = accountRepo.findTotalBalance(uid);
+	    
+	    model.addAttribute("totalIncome", totalIncome);
+	    model.addAttribute("totalExpense", totalExpense);
+	    model.addAttribute("monthlyTotalIncome", monthlyTotalIncome);
+	    model.addAttribute("monthlyTotalExpense", monthlyTotalExpense);
+	    model.addAttribute("totalBalance", totalBalance);
+	    
+	    List<IncomeEntity> leteseIncome = incomeRepo.findLetestIncome(uid);
+	    List<ExpenseEntity> leteseExpenses = expenseRepo.findLetestExpences(uid);
+	    
+	    List<TransactionDTO> letestTransaction = transRepo.findRecentTranscation(uid);
+	    model.addAttribute("tra", letestTransaction);
 	}
 }

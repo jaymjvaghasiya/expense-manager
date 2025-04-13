@@ -1,5 +1,6 @@
 package com.restcontroller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dto.SubcategoryDTO;
 import com.entity.SubcategoryEntity;
 import com.repository.SubcategoryRepository;
 
@@ -20,9 +22,14 @@ public class SubcategoryRestController {
 	@GetMapping("/getsubcatsbycats/{categoryId}")
 	public @ResponseBody List<SubcategoryEntity> getCatWiseSubcats(@PathVariable String categoryId) {
 		List<SubcategoryEntity> subcats = subcateRepo.findAllByCategory_CategoryId(categoryId);
-		for(int i = 0; i < subcats.size(); i++) {
-			System.out.println("sname : " + subcats.get(i).getTitle());
-		}
+		List<SubcategoryDTO> subcategoryDTOs = new ArrayList<>();
+		
+		for (SubcategoryEntity subcategory : subcats) {
+
+            SubcategoryDTO dto = new SubcategoryDTO(subcategory.getSubCatId(), subcategory.getTitle());
+            subcategoryDTOs.add(dto);
+        }
+		
 		System.out.println("ssize : " + subcats.size());
 		return subcats;
 	}

@@ -34,20 +34,4 @@ public class UserEntity {
 	private String token = "";
 	private String otp_created_at = "";
 	
-	@OneToMany(mappedBy = "user")
-	@ToString.Exclude
-	private List<AccountEntity> accounts;
-	@OneToMany(mappedBy = "user")
-	@ToString.Exclude
-	private List<VendorEntity> vendors;
-	@OneToMany(mappedBy = "user")
-	@ToString.Exclude
-	private List<CategoryEntity> categories;
-	@OneToMany(mappedBy = "user")
-	@ToString.Exclude
-	private List<SubcategoryEntity> subcategories;
-	@OneToMany(mappedBy = "user")
-	@ToString.Exclude
-	private List<ExpenseEntity> expenses;
-	
 }
