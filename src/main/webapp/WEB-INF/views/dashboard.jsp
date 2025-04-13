@@ -323,17 +323,30 @@ html {
 									</tr>
 								</thead>
 								<tbody>
+								
 									<c:forEach items="${tra}" var="t" varStatus="status">
-										<tr class="border-b border-neutral-700/30">
-											<td class="px-6 py-4">${t.transactionDate}</td>
-											<td class="px-6 py-4">${t.description}</td>
-											<td class="px-6 py-4">${t.category}</td>
-											<td class="px-6 py-4 text-red-500">${t.amount}</td>
-											<td class="px-6 py-4"><span
-												class="px-2 py-1 text-xs rounded-full bg-green-500/10 text-green-500">${t.status}</span>
-											</td>
-										</tr>
-									</c:forEach>	
+									    <tr class="border-b border-neutral-700/30">
+									        <td class="px-6 py-4">${t.transactionDate}</td>
+									        <td class="px-6 py-4">${t.description}</td>
+									        <td class="px-6 py-4">${t.category}</td>
+									
+									        <td class="px-6 py-4">
+									            <c:if test="${t.category eq 'Expense'}">
+									                <span class="text-red-500">- ₹${t.amount}</span>
+									            </c:if>
+									            <c:if test="${t.category ne 'Expense'}">
+									                <span class="text-green-500">+ ₹${t.amount}</span>
+									            </c:if>
+									        </td>
+									
+									        <td class="px-6 py-4">
+									            <span class="px-2 py-1 text-xs rounded-full ${t.status == 'Received' || t.status == 'Done' ? 'bg-green-500/10 text-green-500' : t.status == 'Pending' ? 'bg-yellow-500/10 text-yellow-500' : 'bg-red-500/10 text-red-500'}">
+									                ${t.status}
+									            </span>
+									        </td>
+									    </tr>
+									</c:forEach>
+	
 								</tbody>
 							</table>
 						</div>
